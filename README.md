@@ -14,7 +14,7 @@ Runs live in memory for one hour. A process restart clears them. Each move submi
 
 ## Credits and license
 
-The planned hackathon adaptation is based on **Memeria (`rpg.meme`)**, created by Ignacio Bavala. The reference version is commit `5be039522e256f8eb75144d733134ecab84f86e1`. The original is proprietary. The [approved Rugwyrm authorization](https://github.com/navy0110/memeria-dev3pack/blob/f5a5aad7930c413cca18da8d25531e8e9feb14b1/PERMISSION.md) covers the listed components under MIT. The [proposed full-game authorization](PERMISSION.md) is pending approval. Third-party assets retain their own licenses.
+The planned hackathon adaptation is based on **Memeria (`rpg.meme`)**, created by Ignacio Bavala. The reference version is commit `5be039522e256f8eb75144d733134ecab84f86e1`. The original is proprietary. The [approved Rugwyrm authorization](https://github.com/navy0110/memeria-dev3pack/blob/f5a5aad7930c413cca18da8d25531e8e9feb14b1/PERMISSION.md) covers the listed components under MIT. The [approved full-game authorization](PERMISSION.md) covers the full game within the scope stated there. Third-party assets retain their own licenses.
 
 The current Lantern Arena prototype uses original code and content. Memeria's code, artwork, and branding are outside this prototype.
 
