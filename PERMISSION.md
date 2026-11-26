@@ -1,7 +1,5 @@
 # Autorización para usar y adaptar Memeria completo en Dev3pack
 
-**Borrador pendiente de aprobación por Ignacio Bavala.**
-
 - **Titular que autoriza** — Ignacio Bavala.
 - **Persona autorizada** — Natalia Gonzalez, cuenta de GitHub `navy0110`.
 - **Proyecto original** — Memeria (`rpg.meme`), en el commit `5be039522e256f8eb75144d733134ecab84f86e1`.
@@ -20,4 +18,4 @@ Esta autorización no transfiere la titularidad de Memeria. El repositorio origi
 ## Confirmación
 
 - **Fecha de aprobación** — 26-11-2026
-- **Referencia** — [correo de Ignacio que aprueba esta versión exacta o documento firmado].
+- **Referencia** — Ignacio Bavala aprobó por correo electrónico la [versión del permiso para el juego completo](https://github.com/navy0110/memeria-dev3pack/blob/dceb240cf0f7e870a92d4d6426fc4b838d238cb2/PERMISSION.md). La confirmación se conserva en privado.
