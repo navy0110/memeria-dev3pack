@@ -1,0 +1,11 @@
+{
+  "zone": "pantano",
+  "version": "1",
+  "neighbors": ["estepa", "campo"],
+  "assets": [
+    { "id": "obelisco-placeholder", "url": "/assets/world/zones/pantano/obelisco.glb", "bytes": 1576 }
+  ],
+  "placements": [
+    { "asset": "obelisco-placeholder", "position": [-30, 0, -40], "rotationY": 0.6 }
+  ]
+}

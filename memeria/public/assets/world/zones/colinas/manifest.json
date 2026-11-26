@@ -1,0 +1,9 @@
+{
+  "zone": "colinas",
+  "version": "1",
+  "neighbors": [
+    "campo"
+  ],
+  "assets": [],
+  "placements": []
+}

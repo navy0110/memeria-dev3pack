@@ -1,0 +1,18 @@
+node_modules
+dist
+*.log
+
+# Generado por brain-agents-inject (contiene nombres de clientes del vault; no se publica)
+AGENTS.md
+
+# Música (public/music, no se sube a git)
+public/music/
+
+.keys/
+
+# Brand kit: los PNG se regeneran con brand/render.sh
+brand/*.png
+.wrangler/
+
+# Secretos locales de wrangler dev
+.dev.vars

@@ -1,0 +1,40 @@
+{
+  "name": "meme-rpg",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && tsc -p tsconfig.worker.json && vite build",
+    "preview": "vite preview",
+    "token:create": "tsx scripts/create-token.ts",
+    "treasury": "tsx scripts/treasury.ts",
+    "check:world": "tsx scripts/test-world.ts",
+    "check:ws": "tsx scripts/test-ws.ts",
+    "check:party": "tsx scripts/test-party.ts",
+    "check:auth": "tsx scripts/test-auth.ts",
+    "deploy": "pnpm build && wrangler deploy"
+  },
+  "dependencies": {
+    "@metamask/connect-solana": "^2.1.1",
+    "@noble/curves": "^1.9.7",
+    "@solana/kit": "^8.5.0",
+    "@solana/wallet-standard-features": "^1.5.0",
+    "@wallet-standard/app": "^1.1.1",
+    "@wallet-standard/base": "^1.1.1",
+    "@wallet-standard/features": "^1.1.1",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261027.1",
+    "@solana-program/compute-budget": "^0.20.0",
+    "@solana-program/system": "^0.16.0",
+    "@solana-program/token": "^0.18.0",
+    "@types/node": "^26.6.5",
+    "@types/three": "0.186.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vite": "8.3.5",
+    "wrangler": "^4.153.0"
+  }
+}

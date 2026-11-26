@@ -1,0 +1,11 @@
+{
+  "zone": "villa",
+  "version": "1",
+  "neighbors": ["camino", "estepa"],
+  "assets": [
+    { "id": "monolito-placeholder", "url": "/assets/world/zones/villa/monolito.glb", "bytes": 1576 }
+  ],
+  "placements": [
+    { "asset": "monolito-placeholder", "position": [-19, 0, 0], "rotationY": 0 }
+  ]
+}

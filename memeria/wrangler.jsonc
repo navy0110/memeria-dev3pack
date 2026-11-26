@@ -1,0 +1,19 @@
+// Estáticos con Workers Static Assets + un Worker que atiende solo /ws: un Durable Object que hace de servidor de la
+// zona (chat, presencia, mobs y botín compartidos, ranking semanal) y /api (ingreso con firma de wallet, perfil y guardado en D1).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "memeria-dev3pack",
+  "compatibility_date": "2026-10-26",
+  "main": "./src/server/worker.ts",
+  // Usá una base D1 exclusiva de la hackatón antes de desplegar.
+  "d1_databases": [{ "binding": "DB", "database_name": "memeria-dev3pack", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }],
+  "durable_objects": { "bindings": [{ "name": "CHAT", "class_name": "ChatRoom" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ChatRoom"] }],
+  "assets": {
+    "directory": "./dist",
+    // Solo /ws y /api pasan por el Worker; todo lo demás sale directo de los estáticos.
+    "run_worker_first": ["/ws", "/api/*"],
+    // Una ruta que no existe es un 404 de verdad (no el index.html): el juego no tiene rutas propias.
+    "not_found_handling": "404-page"
+  }
+}

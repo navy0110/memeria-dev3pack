@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MMRIA Tokenomics · Memeria</title>
+<meta name="description" content="How the MMRIA token works in Memeria: fixed supply, no team allocation, public addresses and what it is for." />
+<link rel="icon" type="image/svg+xml" href="/icon.svg" />
+<style>
+  :root { --bg:#070816; --panel:#10122a; --line:#262a52; --ink:#eef1ff; --mute:#a3a9d6; --gold:#ffe08a; --ok:#7be0a4; --warn:#ffb86b; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 system-ui,'Segoe UI',sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:40px 16px 80px; }
+  header { display:flex; align-items:center; gap:14px; margin-bottom:28px; }
+  header img { width:56px; height:56px; }
+  h1 { font-size:28px; margin:0; line-height:1.2; }
+  h1 small { display:block; font-size:14px; font-weight:400; color:var(--mute); }
+  h2 { font-size:20px; margin:40px 0 12px; color:var(--gold); }
+  p { margin:0 0 14px; }
+  a { color:var(--gold); }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:14px 0; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mute); font-weight:600; width:34%; }
+  code { font:13px ui-monospace,Menlo,Consolas,monospace; background:#0b0d22; padding:2px 6px; border-radius:6px; word-break:break-all; }
+  .tbd { color:var(--warn); }
+  .ok { color:var(--ok); }
+  ul { padding-left:20px; margin:0 0 14px; }
+  li { margin-bottom:6px; }
+  .contract { border-color:rgba(255,224,138,.5); text-align:center; }
+  .contract .tag { display:block; margin-bottom:10px; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); }
+  .contract .row { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+  .contract code { flex:1 1 260px; padding:10px 12px; font-size:13px; user-select:all; }
+  .contract button { padding:10px 18px; font:700 13px system-ui,sans-serif; color:#1a1230; background:linear-gradient(180deg,#ffe9a0,#f0b83a); border:0; border-radius:8px; cursor:pointer; }
+  .contract p { margin:10px 0 0; font-size:13px; }
+  footer { margin-top:48px; color:var(--mute); font-size:13px; }
+  @media (max-width:520px) { th, td { display:block; width:100%; padding:4px 0; } th { padding-top:12px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="/icon.svg" alt="Memeria shield" />
+    <h1>MMRIA Tokenomics<small>Memeria · the game token</small></h1>
+  </header>
+
+  <div class="card contract">
+    <span class="tag">Official contract · Solana</span>
+    <div class="row"><code id="mint">6384VsyfFRmhq5XLftMpUGQfmPz76xWnVDrkUq3ypump</code><button type="button" id="copy">Copy</button></div>
+    <p><a href="https://solscan.io/token/6384VsyfFRmhq5XLftMpUGQfmPz76xWnVDrkUq3ypump" target="_blank" rel="noopener noreferrer">Solscan</a> · <a href="https://pump.fun/coin/6384VsyfFRmhq5XLftMpUGQfmPz76xWnVDrkUq3ypump" target="_blank" rel="noopener noreferrer">pump.fun</a> · <a href="https://rugcheck.xyz/tokens/6384VsyfFRmhq5XLftMpUGQfmPz76xWnVDrkUq3ypump" target="_blank" rel="noopener noreferrer">RugCheck</a></p>
+  </div>
+
+  <p>MMRIA is the token of <a href="/">Memeria</a>, a free-to-play browser RPG. This page says what MMRIA is, what it is not, and where every address lives, so you can check it yourself instead of trusting us.</p>
+
+  <div class="card">
+    <strong>Short version.</strong> You can play the whole game without MMRIA. The token never makes you stronger than someone who earns their gear by playing. There is no team allocation, no presale and no promise of price.
+  </div>
+
+  <h2>The facts</h2>
+  <table>
+    <tr><th>Token</th><td>Memeria · ticker <strong>MMRIA</strong></td></tr>
+    <tr><th>Network</th><td>Solana · Token-2022 (SPL), 6 decimals</td></tr>
+    <tr><th>Launched on</th><td>pump.fun (fair launch on a bonding curve)</td></tr>
+    <tr><th>Mint address</th><td><code>6384VsyfFRmhq5XLftMpUGQfmPz76xWnVDrkUq3ypump</code></td></tr>
+    <tr><th>Total supply</th><td>1,000,000,000 MMRIA, fixed at creation.</td></tr>
+    <tr><th>Mint authority</th><td class="ok">Revoked. Nobody can create more. Verify it on Solscan.</td></tr>
+    <tr><th>Freeze authority</th><td class="ok">None. Nobody can freeze your balance. Verify it on Solscan.</td></tr>
+    <tr><th>Metadata (name, logo)</th><td class="ok">Locked: the update authority is revoked, so nobody can change it.</td></tr>
+    <tr><th>Presale / team allocation</th><td class="ok">None.</td></tr>
+    <tr><th>Creator buy</th><td>2,612,224 MMRIA (about 0.26% of the supply), bought from the creator wallet at creation. Check it on Solscan.</td></tr>
+  </table>
+
+  <h2>Addresses</h2>
+  <table>
+    <tr><th>Creator wallet</th><td><code>7HXbFLe37dDoFcZRCWnnn6PbhcYcyi4PRoh8vzjx74XW</code></td></tr>
+    <tr><th>Game treasury</th><td>The creator wallet above, for now. It receives the creator fees. If it moves to another address (for example a multisig), it will be announced here first.</td></tr>
+  </table>
+  <p>If an address is not listed on this page, it is not ours. Be careful with anyone who says otherwise, in DMs, replies or fake pages.</p>
+
+  <h2>What MMRIA is for</h2>
+  <p>Coins, earned by playing, buy everyday gear. MMRIA is for access and extras. This is the plan, and none of it is live yet:</p>
+  <ul>
+    <li>Cosmetics: skins, auras, mascot palettes.</li>
+    <li>Recipes and materials that save time, not that add power.</li>
+    <li>Entry to weekly tournaments and events.</li>
+  </ul>
+  <p><strong>The rule:</strong> power is earned in the game. Anything that touches power stays reachable with coins and effort. The special weapons currently shown as "Soon" will only go on sale once this rule is settled.</p>
+
+  <h2>Where the money goes</h2>
+  <ul>
+    <li><strong>Creator fees</strong> from pump.fun go to the creator wallet listed above.</li>
+    <li>They pay for servers, the domain and development of the game.</li>
+    <li>MMRIA paid inside the game goes to the weekly ranking prize pool or is burned. It is not kept by us.</li>
+  </ul>
+  <p>Each time the treasury moves funds, the transaction is public. We will summarise it here.</p>
+
+  <h2>How to verify</h2>
+  <ul>
+    <li>Look up the mint on <a href="https://rugcheck.xyz" rel="noopener noreferrer" target="_blank">RugCheck</a> and on Solscan.</li>
+    <li>Confirm that mint and freeze authority are revoked.</li>
+    <li>Check the top holders. The creator wallet should be small.</li>
+    <li>Compare every address with this page.</li>
+  </ul>
+  <p>A brand-new token will always show a few "new / low liquidity" warnings. That is normal and goes away as it grows.</p>
+
+  <h2>What we will not do</h2>
+  <ul>
+    <li>Promise price, returns or "the next 100x".</li>
+    <li>Ask for your seed phrase. Ever.</li>
+    <li>Mint more supply, or add a hidden tax or freeze.</li>
+  </ul>
+
+  <footer>
+    Not financial advice. MMRIA is the utility token of a game; nothing here is an offer or a promise of returns. Memes can go to zero. Only use what you can afford to lose. This page may be updated as the project grows, and we will note the date of each change.
+    <br /><br />Last updated: 2026-10-28 · draft before launch.
+  </footer>
+<script>
+  document.getElementById('copy').addEventListener('click', function () {
+    var b = this;
+    var done = function (t) { b.textContent = t; setTimeout(function () { b.textContent = 'Copy'; }, 1600); };
+    navigator.clipboard.writeText(document.getElementById('mint').textContent).then(function () { done('Copied'); }, function () { done('Select it'); });
+  });
+</script>
+</main>
+</body>
+</html>

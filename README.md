@@ -1,5 +1,7 @@
 # Lantern Arena
 
+The [full Memeria game](memeria/README.md) is in `memeria/` under the [Dev3pack authorization](PERMISSION.md). Its [MIT notice](memeria/LICENSE) preserves Ignacio Bavala's copyright. Third-party music is outside this snapshot. Deployment requires a dedicated D1 database in `memeria/wrangler.jsonc`.
+
 An original combat prototype for the Dev3pack Global Hackathon. The player fights the Glass Sentinel in a short turn-based encounter. The browser and agent API use the same server-side game rules.
 
 ## Run locally

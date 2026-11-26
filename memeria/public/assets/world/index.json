@@ -1,0 +1,17 @@
+{
+  "world": "hodl-hollow",
+  "version": "1",
+  "zones": [
+    "villa",
+    "camino",
+    "campo",
+    "estepa",
+    "pantano",
+    "prado",
+    "colinas",
+    "canon",
+    "yermos",
+    "pozo"
+  ],
+  "note": "Assets sint\u00e9ticos propios (cajas), solo para probar el streaming por zonas."
+}

@@ -1,0 +1,9 @@
+{
+  "zone": "pozo",
+  "version": "1",
+  "neighbors": [
+    "pantano"
+  ],
+  "assets": [],
+  "placements": []
+}

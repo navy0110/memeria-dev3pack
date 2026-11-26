@@ -1,0 +1,195 @@
+import type { NpcDef } from '../shared/types';
+
+// Diálogos de relleno (cuando el NPC no tiene misión que atender). Las posiciones están en la zona.
+// El reparto sale del mundo memecoin: cada NPC es un arquetipo (paper hands, diamond hands, ballena...).
+export const NPC_DEFS: Record<string, NpcDef> = {
+  'elder-hodl': {
+    id: 'elder-hodl',
+    name: 'Elder Hodl',
+    title: 'Village Elder',
+    look: 'elder',
+    lines: [
+      'Hodl Hollow stood long before the Great Rug Pull. We held then. We hold now.',
+      'Space strikes. R unleashes your signature skill, but it burns MP.',
+      'Bear Markets roam the east road and the fields. Ghosts haunt the marsh to the north. The Ruins of the First Mint lie west, and nobody goes there without a reason.',
+      'The Lantern Well is the last light in Memeria. As long as it glows, so does the Herd.',
+      'Seven Founders lit this Well. Six of them are gone. If you find a torn page of their Ledger, keep it. Read it by the fountain, where it is quiet.',
+      'You will not walk this road alone, Wanderer. Press P to gather up to three friends into a party. Press H and Mend heals the friend who is hurting most. The big ones on the ridges are meant to be fought together.',
+      'The Ledger of the Seven has seven pages. Ghosts, fallen Founders and the Deployer himself carry them. Every quest in your log is one step toward bringing them home to the Well.',
+      'Past the fields lie the Dead Cat Hills. Past the ruins, Liquidation Canyon. South of the meadow, the Whitepaper Wastes. And beyond the marsh, the Drained Pool. I have never been to any of them. I hold the fountain.',
+    ],
+  },
+  'bruno-scout': {
+    id: 'bruno-scout',
+    name: 'Bruno the Scout',
+    title: 'Road Watch',
+    look: 'scout',
+    lines: [
+      'The east road is quiet now. Too quiet. Mind the ruins at night.',
+      'The ghosts keep their distance from the lanterns. Stay close to the light when you can.',
+      'I counted forty Bear Markets on the fields at dawn. Then I stopped counting. Counting is bullish; I was not feeling bullish.',
+    ],
+  },
+  'tom-innkeeper': {
+    id: 'tom-innkeeper',
+    name: 'Tom the Innkeeper',
+    title: 'Last Block Inn',
+    look: 'innkeeper',
+    lines: [
+      'Welcome to the Last Block Inn. A bed costs a few coins, and the pillow has never once sold the dip. Just do not sell in the lobby.',
+      'The old folk sing a rhyme: "Green candles rise, red candles fall, the Herd that holds will outlast all."',
+      'The Founders drank here, you know. Paid in promises. Nothing in the till but IOUs.',
+    ],
+  },
+  'ana-trader': {
+    id: 'ana-trader',
+    name: 'Ana the Alchemist',
+    title: 'Recipe Keeper',
+    look: 'alchemist',
+    lines: [
+      'I used to sell potions. Then the Founders vanished with the recipe book, the cauldron and my shop lease. Now I sell stories.',
+      'Without a recipe, a sword is just an expensive rumor. The old recipes are scattered all over Memeria. Find them, and Dan can forge again.',
+      'Some say the Rug Pull was no crime, but a spell. Whoever cast it is still out there.',
+    ],
+  },
+  'diamond-dan': {
+    id: 'diamond-dan',
+    name: 'Diamond Dan',
+    title: 'Blacksmith',
+    look: 'smith',
+    lines: [
+      'Name is Dan. I have never sold anything. Not a hammer, not a nail, not one bad day.',
+      'Iron for honest coins, in three grades. The legendary stuff, the Candle Cutter and the Floor Breaker, needs a recipe. No recipe, no forge. Rules are rules.',
+      'Bear coins barely cover the iron. The good steel is paid for in MMRIA, and I have never seen Gary give a discount.',
+    ],
+  },
+  'paper-hands-pete': {
+    id: 'paper-hands-pete',
+    name: 'Paper Hands Pete',
+    title: 'Potion Seller',
+    look: 'paper',
+    lines: [
+      'H-hi! Potions! Cheap! Buy now, before the price drops! Or before I panic!',
+      'I sold my best sword at the first dip. Then it went to the moon. I try not to think about it.',
+      'Everything is for sale. Everything. Even this chair. Especially this chair.',
+    ],
+  },
+  'whale-wanda': {
+    id: 'whale-wanda',
+    name: 'Whale Wanda',
+    title: 'Banker',
+    look: 'whale',
+    lines: [
+      'I move markets just by walking past them. Mind your step near the fountain, you could cause a splash.',
+      'The Founders kept their vault right under this square. They emptied it in a single night. I have never forgiven the slippage.',
+      'One MMRIA is a ripple. A million is a tide. I intend to be the tide.',
+    ],
+  },
+  'degen-dex': {
+    id: 'degen-dex',
+    name: 'Degen Dex',
+    title: 'Gambler',
+    look: 'degen',
+    lines: [
+      'Psst. 100x. I can feel it. The bears? Just a pullback, friend.',
+      'I put everything on a coin whose logo was a frog in a hat. It had a rug under it. Literally.',
+      'Flip a coin with me. Heads I win, tails you hold the bag.',
+    ],
+  },
+  'exit-eddie': {
+    id: 'exit-eddie',
+    name: 'Exit Liquidity Eddie',
+    title: 'Bag Holder',
+    look: 'exit',
+    lines: [
+      'BUY MY BAGS! Please. They are very good bags.',
+      'Everybody called me "exit liquidity". I did not know what it meant. I do now.',
+      'If you see the Founders, tell them... never mind. Tell them nothing.',
+    ],
+  },
+  'gary-grocer': {
+    id: 'gary-grocer',
+    name: 'Gary the Grocer',
+    title: 'Grocery Store',
+    look: 'grocer',
+    lines: [
+      'Welcome to the Grocery Store! Fresh apples, stale hype, and the finest gear in Memeria.',
+      'Coins buy apples. For the real gear I only take MMRIA. It is not personal, it is liquidity.',
+      'Potions, apples, and sellers welcome. I buy pelts and wisps too, no questions about where you found them.',
+    ],
+  },
+  'mod-mike': {
+    id: 'mod-mike',
+    name: 'Mod Mike',
+    title: 'Village Guard',
+    look: 'mod',
+    lines: [
+      'Keep it civil in the square. No FUD, no shilling, no "wen moon".',
+      'I got this hammer from the Founders\' mods when they banned themselves. Long story.',
+      'Rule one: be nice. Rule two: see rule one. Rule three: the ban hammer is real.',
+    ],
+  },
+  'last-founder': {
+    id: 'last-founder',
+    name: 'The Last Founder',
+    title: 'Restless Spirit',
+    look: 'founder',
+    lines: [
+      '...you can see me? Nobody has seen me since the Pull.',
+      'We built the Well, you know. Then the Rug Pull came and the others left. I stayed. Leaving, it turns out, is easier than coming back.',
+      'The recipes are scattered across Memeria. Gather them and the forge will wake.',
+      'The Ruins of the First Mint remember everything. Even what I would rather forget.',
+      'There were seven of us. Six signed the Deployer\'s page. I read it, and something in the margin made me put the quill down. I have been holding that quill ever since.',
+      'Greed, Fear and Vanity: three of us became what you meet on the roads. The other three went into the Pool with the key. Every page is one of us telling you what happened.',
+      'The Ledger of the Seven was torn into seven pages when the Pool drained. Each page clung to whatever grew out of a broken promise. Bring them to the Well, one by one. It remembers.',
+    ],
+  },
+  'dolores-dipbuyer': {
+    id: 'dolores-dipbuyer',
+    name: 'Dip Buyer Dolores',
+    title: 'Camp Warden',
+    look: 'mod',
+    lines: [
+      'Dip Buyer Camp. Population: me, a fire, and a very large number of bad ideas that tried to eat us.',
+      'I bought every dip on these hills. Every single one. The hills are still here. That is the only chart that matters.',
+      'The cats look dead because they are. They bounce anyway. That is the whole joke, and the whole danger.',
+      'The bulls on the ridge are the real trouble. They look green. Never trust green that charges.',
+    ],
+  },
+  'margin-mary': {
+    id: 'margin-mary',
+    name: 'Margin Mary',
+    title: 'Canyon Surveyor',
+    look: 'alchemist',
+    lines: [
+      'Last Margin Post. If you owe the canyon, it will collect. That is what a canyon is for.',
+      'This stone was a city once. Then every position in it got called at the same minute. The city did not survive. The golems are what it left.',
+      'I take measurements. Depth of the drop, speed of the fall. Both worse than yesterday.',
+      'The Colossus at the end of the canyon is a Founder. You can tell by the stop-loss sigil on its chest. Do not let it count to three.',
+    ],
+  },
+  'whitepaper-walt': {
+    id: 'whitepaper-walt',
+    name: 'Whitepaper Walt',
+    title: 'Wasteland Cartographer',
+    look: 'exit',
+    lines: [
+      'I wrote a whitepaper once. Eighty-seven pages. Nobody read it, and then everybody quoted it.',
+      'These sands used to be the Roadmap Plains. Everything promised was here. Then the promises stopped, and the wind took the rest.',
+      'Shillbots repeat what they hear loudest. Vaporware Wisps repeat what they hoped. Neither one has ever shipped anything.',
+      'Hype Man hasn\'t stopped talking in a very long time. Be ready for the volume.',
+    ],
+  },
+  'rekt-rick': {
+    id: 'rekt-rick',
+    name: 'Rekt Rick',
+    title: 'Pool Lookout',
+    look: 'innkeeper',
+    lines: [
+      'The Drained Pool starts just north of here. Down there everything is rekt. I used to say it as a joke.',
+      'The Pool was the Well\'s big sister. Every promise in Memeria drained into it that night. It still pulls, if you stand too close.',
+      'The Deployer is down there, sitting on the Admin Key. He has not moved in a long time. He is waiting for someone to try.',
+      'I keep a lantern lit up here. Not for me. For whoever walks down there next.',
+    ],
+  },
+};

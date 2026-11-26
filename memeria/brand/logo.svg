@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 260" width="900" height="260"><defs>
+  <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0b0"/><stop offset=".5" stop-color="#ffd35a"/><stop offset="1" stop-color="#c98a14"/></linearGradient>
+  <radialGradient id="glow" cx=".5" cy=".62" r=".5"><stop offset="0" stop-color="#fff6cf"/><stop offset=".45" stop-color="#ffd35a" stop-opacity=".85"/><stop offset="1" stop-color="#ff9a3d" stop-opacity="0"/></radialGradient>
+</defs>
+<g transform="translate(30 20) scale(1.7)"><g id="emblem">
+  <path d="M50 6 L92 22 V68 C92 98 73 120 50 134 C27 120 8 98 8 68 V22 Z" fill="#0a0c2c" stroke="url(#gold)" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M50 14 L84 27 V68 C84 92 69 111 50 123 C31 111 16 92 16 68 V27 Z" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity=".55"/>
+  <path d="M25 98 V46 L50 80 L75 46 V98" fill="none" stroke="url(#gold)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M50 26 L54 35 L63 36 L56 42 L58 51 L50 46 L42 51 L44 42 L37 36 L46 35 Z" fill="#fff0b0"/>
+</g></g><text x="230" y="150" font-family="Georgia, 'DejaVu Serif', serif" font-weight="700" font-size="118" textLength="620" lengthAdjust="spacingAndGlyphs" fill="url(#gold)">MEMERIA</text><text x="236" y="206" font-family="system-ui, 'DejaVu Sans', sans-serif" font-weight="700" font-size="30" letter-spacing="16" fill="#aebaf2">HOLD THE LINE</text></svg>

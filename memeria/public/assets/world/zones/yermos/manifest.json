@@ -1,0 +1,9 @@
+{
+  "zone": "yermos",
+  "version": "1",
+  "neighbors": [
+    "prado"
+  ],
+  "assets": [],
+  "placements": []
+}
