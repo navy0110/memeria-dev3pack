@@ -1,6 +1,5 @@
 # Autorización para adaptar Memeria y presentar la adaptación en Dev3pack
 
-**Borrador pendiente de aprobación.** Completá los campos entre corchetes y confirmá el alcance de la lista antes de que el titular apruebe este documento.
 
 - **Titular que autoriza:** Ignacio Bavala.
 - **Persona autorizada:** Natalia Gonzalez, cuenta de GitHub `navy0110`.
