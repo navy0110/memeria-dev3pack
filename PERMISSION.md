@@ -1,30 +1,23 @@
-# Autorización para adaptar Memeria y presentar la adaptación en Dev3pack
+# Autorización para usar y adaptar Memeria completo en Dev3pack
 
+**Borrador pendiente de aprobación por Ignacio Bavala.**
 
-- **Titular que autoriza:** Ignacio Bavala.
-- **Persona autorizada:** Natalia Gonzalez, cuenta de GitHub `navy0110`.
-- **Proyecto original:** Memeria (`rpg.meme`), versión de referencia `5be039522e256f8eb75144d733134ecab84f86e1`.
-- **Repositorio de la entrega:** https://github.com/navy0110/memeria-dev3pack
-- **Licencia abierta autorizada para los componentes indicados:** MIT License (MIT)
+- **Titular que autoriza** — Ignacio Bavala.
+- **Persona autorizada** — Natalia Gonzalez, cuenta de GitHub `navy0110`.
+- **Proyecto original** — Memeria (`rpg.meme`), en el commit `5be039522e256f8eb75144d733134ecab84f86e1`.
+- **Repositorio de la entrega** — https://github.com/navy0110/memeria-dev3pack
 
-Yo, Ignacio Bavala, autorizo a la persona indicada arriba, de forma no exclusiva y sin cargo, a copiar, modificar e integrar los componentes de Memeria enumerados abajo para adaptar el combate contra Rugwyrm e integrarlo con ByteArena. Autorizo a publicar y distribuir esos componentes, en su forma original o modificada, en el repositorio de la entrega bajo la licencia abierta indicada. También autorizo a alojar y mostrar públicamente la adaptación y a presentarla a los organizadores y jurados de Dev3pack.
+Yo, Ignacio Bavala, autorizo a Natalia Gonzalez, de forma no exclusiva y sin cargo, a copiar el repositorio original completo en la versión indicada y a usar, ejecutar, modificar y adaptar Memeria para la entrega de Dev3pack. La autorización abarca todo el código fuente, documentación, diseño, textos, niveles, personajes, arte, modelos, animaciones y demás recursos originales del juego incluidos en esa versión sobre los que tengo facultad para otorgarla.
 
-## Componentes autorizados
+Autorizo a publicar y distribuir esos componentes, en su forma original o modificada, en el repositorio público de la entrega bajo la licencia **MIT (SPDX `MIT`)**, para que terceros puedan ejercer los derechos de esa licencia. También autorizo a desplegar y alojar públicamente la adaptación, integrarla con ByteArena y mostrarla a organizadores, jurados y público en demos y materiales de presentación de Dev3pack.
 
-| Ruta en el repositorio original | Descripción |
-| --- | --- |
-| `src/data/mobs.ts` | Entrada `rugwyrm`: nombre del jefe, apariencia, vida, daño, alcance, tiempos de ataque y demás parámetros del encuentro. |
-| `src/shared/ai.ts` | Lógica de IA de enemigos que usa Rugwyrm para detectar, perseguir y atacar al jugador. |
-| `src/shared/game.ts` y `src/shared/combat.ts` | Fragmentos que gestionan la selección de objetivos, los ataques, el daño y la derrota en el encuentro. |
-| `src/client/mobmodels.ts` y `src/client/mascots.ts` | Generación del modelo 3D procedural que usa Rugwyrm, incluidos los fragmentos de `Builder` y `pivot` necesarios para construirlo. |
-| `src/client/entities.ts` | Fragmentos que instancian el modelo de Rugwyrm y representan sus movimientos y la preparación de sus ataques. |
+Autorizo a usar el nombre Memeria y sus logotipos para identificar y mostrar esta adaptación en el repositorio, la demo y los materiales de presentación de Dev3pack. Este permiso de marca se limita a esos usos.
 
-La autorización se limita a los componentes enumerados sobre los que tengo facultad para otorgarla. El material de terceros se rige por sus propias licencias. El nombre Memeria puede mencionarse para acreditar el proyecto original. El uso del logotipo como parte de la identidad de la adaptación requiere autorización aparte.
+El material de terceros, incluida la música, conserva sus propias licencias. Solo podrá incluirse en el repositorio público o en la demo cuando sus términos permitan ese uso. La entrega acreditará a Ignacio Bavala como autor original, conservará los avisos aplicables y documentará los cambios realizados para Dev3pack.
 
-La entrega acreditará a Ignacio Bavala como autor original de Memeria, conservará los avisos aplicables e identificará las modificaciones hechas para Dev3pack. La titularidad del proyecto original y la licencia de sus demás archivos se mantienen.
+Esta autorización no transfiere la titularidad de Memeria. El repositorio original conserva su licencia. La publicación bajo MIT se aplica a los componentes propios autorizados que se distribuyan en el repositorio de la entrega.
 
-## Aprobación del titular
+## Confirmación
 
-- **Nombre:** Ignacio Bavala
-- **Fecha:** 26-11-2026
-- **Firma o referencia a la confirmación escrita: Aprobado por Ignacio Bavala por correo electrónico el 26-11-2026. Versión aprobada. Confirmación disponible a solicitud.
+- **Fecha de aprobación** — 26-11-2026
+- **Referencia** — [correo de Ignacio que aprueba esta versión exacta o documento firmado].
