@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lantern Arena</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #141723; color: #fcf5e3; font: 1.1rem system-ui; }
+  main { max-width: 36rem; margin: 8vh auto; padding: 1.5rem; }
+  h1 { color: #ffcb80; font: 3rem Georgia, serif; margin: 0; }
+  section { background: #252a3c; padding: 1.25rem; border-radius: .8rem; margin-block: 1rem; }
+  button { font: inherit; padding: .5rem .85rem; margin: .2rem; cursor: pointer; }
+  progress { display: block; width: 100%; accent-color: #ffb971; }
+  [hidden] { display: none; }
+</style>
+<main>
+  <h1>Lantern Arena</h1>
+  <p>Defeat the Glass Sentinel in 18 turns. Dodge heavy blows to recharge your pulse.</p>
+  <button id="start">Enter arena</button>
+  <section id="arena" hidden>
+    <label>Player <progress id="player" max="16"></progress></label>
+    <label>Glass Sentinel <progress id="boss" max="22"></progress></label>
+    <p id="status" role="status"></p>
+    <div id="moves">
+      <button data-action="strike">Strike</button>
+      <button data-action="dodge">Dodge</button>
+      <button data-action="pulse">Pulse</button>
+    </div>
+  </section>
+  <p id="error" role="alert"></p>
+</main>
+<script type="module">
+  const byId = id => document.getElementById(id);
+  const watchId = location.pathname.startsWith('/watch/') ? location.pathname.split('/')[2] : '';
+  const buttons = [...document.querySelectorAll('[data-action]')];
+  let run;
+  let apiKey;
+  let busy = false;
+
+  function render() {
+    if (!run) return;
+    byId('arena').hidden = false;
+    byId('player').value = run.playerHealth;
+    byId('boss').value = run.bossHealth;
+    byId('status').textContent = run.status === 'active'
+      ? `Turn ${run.turn}/18 · HP ${run.playerHealth}/16 · Sentinel ${run.bossHealth}/22 · Charges ${run.charges}/2 · Incoming damage ${run.nextAttack}`
+      : run.status === 'won' ? 'The Sentinel falls. Victory!' : 'The Sentinel holds. Defeat.';
+    buttons.forEach(button => {
+      button.disabled = busy || !run.availableActions.includes(button.dataset.action);
+    });
+  }
+
+  async function request(path, options) {
+    if (busy) return;
+    busy = true;
+    byId('start').disabled = true;
+    byId('error').textContent = '';
+    render();
+    try {
+      const response = await fetch(path, options);
+      const data = await response.json();
+      if (data.roundId) run = data;
+      if (data.apiKey) apiKey = data.apiKey;
+      if (!response.ok) throw new Error(data.error);
+    } catch (error) {
+      byId('error').textContent = error.message;
+    } finally {
+      busy = false;
+      byId('start').disabled = false;
+      render();
+    }
+  }
+
+  byId('start').onclick = () => request('/api/runs', { method: 'POST' });
+  buttons.forEach(button => {
+    button.onclick = () => request('/api/runs/' + run.roundId + '/' + button.dataset.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },
+      body: JSON.stringify({ turn: run.turn })
+    });
+  });
+  if (watchId) {
+    byId('start').hidden = true;
+    byId('moves').hidden = true;
+    const refresh = async () => {
+      await request('/api/runs/' + watchId);
+      if (!run || run.status === 'active') setTimeout(refresh, 1000);
+    };
+    refresh();
+  }
+</script>
+</html>
