@@ -17,6 +17,7 @@ import { PARTY, mendAmount, type PartyNote, type PartyView } from '../shared/par
 
 interface Env extends ApiEnv {
   CHAT: DurableObjectNamespace<ChatRoom>;
+  ARENA: Fetcher;
 }
 
 /** Cabecera interna con la dirección ya verificada: el Worker la pisa siempre, un cliente no puede mandarla. */
@@ -75,6 +76,9 @@ const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFi
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+    if (request.method === 'GET' && /^\/api\/runs\/[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/.test(url.pathname)) {
+      return env.ARENA.fetch(new Request(url));
+    }
     if (url.pathname.startsWith('/api/')) return handleApi(request, env, ctx);
     if (url.pathname !== '/ws') return new Response('Not found', { status: 404 });
     if (request.headers.get('Upgrade') !== 'websocket') return new Response('Expected a websocket', { status: 426 });
