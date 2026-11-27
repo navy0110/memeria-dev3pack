@@ -3,10 +3,10 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "memeria-dev3pack",
+  "account_id": "8368cf80fc31f029e1bfbc6a19f29b60",
   "compatibility_date": "2026-10-26",
   "main": "./src/server/worker.ts",
-  // Usá una base D1 exclusiva de la hackatón antes de desplegar.
-  "d1_databases": [{ "binding": "DB", "database_name": "memeria-dev3pack", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }],
+  "d1_databases": [{ "binding": "DB", "database_name": "memeria", "database_id": "ab0827ef-c7b7-4d3d-80a6-662990ff7592", "migrations_dir": "migrations" }],
   "durable_objects": { "bindings": [{ "name": "CHAT", "class_name": "ChatRoom" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ChatRoom"] }],
   "assets": {
