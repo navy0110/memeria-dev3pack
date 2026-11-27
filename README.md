@@ -1,29 +1,47 @@
-# Lantern Arena
+# Memeria · Dev3pack
 
-The [full Memeria game](memeria/README.md) is in `memeria/` under the [Dev3pack authorization](PERMISSION.md). Its [MIT notice](memeria/LICENSE) preserves Ignacio Bavala's copyright. Third-party music is outside this snapshot. Deployment requires a dedicated D1 database in `memeria/wrangler.jsonc`.
+[Memeria](memeria/README.md) is a web RPG set in Hodl Hollow. This repository contains the complete authorized source snapshot of the game and the Rugwyrm encounter built for Dev3pack.
 
-An original combat prototype for the Dev3pack Global Hackathon. The player fights the Glass Sentinel in a short turn-based encounter. The browser and agent API use the same server-side game rules.
+## Demo
 
-## Run locally
+- [Public Rugwyrm arena](https://memeria-dev3pack-arena.lovechainart.workers.dev/)
+- [ByteArena game manifest](https://memeria-dev3pack-arena.lovechainart.workers.dev/api/game-spec)
 
-Requires Node.js 22. Run `node server.mjs` and open http://localhost:3000.
+The public demo is an isolated encounter that uses Memeria's combat engine, Rugwyrm AI, and Dogwifhat class. The boss has 160 HP for a short demo. Our test agent completed it through the public API. Registration and testing with the official ByteArena agent are pending.
 
-## ByteArena
+## Run Memeria and the arena locally
 
-Deploy as a single Node.js process with a public HTTPS origin. Set `PUBLIC_ORIGIN` to that origin and use `PORT` if provided by the host. Open `/api/game-spec` on the deployed origin and submit its Markdown through ByteArena's My games screen. The manifest includes a read-only spectator page.
+Use Node.js 24 or later and pnpm 10. Run these commands from the repository root in PowerShell.
 
-Runs live in memory for one hour. A process restart clears them. Each move submits the current turn and the credential returned when the run started. Stale moves are rejected. The spectator route exposes only combat state.
+```powershell
+Push-Location memeria
+pnpm install --frozen-lockfile
+pnpm build
+node scripts/build-rugwyrm.mjs
+Pop-Location
+$env:ARENA = 'rugwyrm'
+$env:PORT = '3010'
+node server.mjs
+```
+
+Open [the local arena](http://127.0.0.1:3010) to play the encounter. In a second terminal, start the test agent with `node rugwyrm-agent.mjs`. Its output includes a spectator link.
+
+To play the original game or watch the agent inside the original world, start the Memeria client in another terminal.
+
+```powershell
+Set-Location memeria
+$env:MEMERIA_ARENA_ORIGIN = 'http://127.0.0.1:3010'
+pnpm dev
+```
+
+Open the Vite URL to play Memeria. Add `?bytearena=<roundId>` to that URL to watch a run in Hodl Hollow. Use the UUID from the agent's spectator link. Vite forwards `/api/runs` to the local arena. A hosted Memeria client requires the corresponding route to the arena Worker.
+
+## Cloudflare
+
+The arena Worker is configured in [wrangler.arena.jsonc](memeria/wrangler.arena.jsonc). Build with `node scripts/build-rugwyrm.mjs` from `memeria/` and deploy with `pnpm exec wrangler deploy --config wrangler.arena.jsonc` to an authorized Cloudflare account. The arena uses one Durable Object per run and expires runs after an hour. The full game has a separate [Worker configuration](memeria/wrangler.jsonc) and requires a dedicated D1 binding.
 
 ## Credits and license
 
-The planned hackathon adaptation is based on **Memeria (`rpg.meme`)**, created by Ignacio Bavala. The reference version is commit `5be039522e256f8eb75144d733134ecab84f86e1`. The original is proprietary. The [approved Rugwyrm authorization](https://github.com/navy0110/memeria-dev3pack/blob/f5a5aad7930c413cca18da8d25531e8e9feb14b1/PERMISSION.md) covers the listed components under MIT. The [approved full-game authorization](PERMISSION.md) covers the full game within the scope stated there. Third-party assets retain their own licenses.
+Ignacio Bavala created the original Memeria game. This copy is based on revision `5be039522e256f8eb75144d733134ecab84f86e1`. The [authorization](PERMISSION.md) covers the full game within its stated scope, and the [MIT notice](memeria/LICENSE) preserves Ignacio's copyright. Third-party music is outside this snapshot.
 
-The current Lantern Arena prototype uses original code and content. Memeria's code, artwork, and branding are outside this prototype.
-
-### Work developed for the hackathon
-
-- **Combat prototype** (`arena.html` and `server.mjs`). A playable turn-based encounter against the Glass Sentinel, with shared server-side rules for browser players and agents.
-- **ByteArena integration** (`server.mjs`). A game manifest at `/api/game-spec`, endpoints for creating and playing runs, and server-side turn validation.
-- **Spectator view** (`/watch/<runId>`). A read-only browser view that displays the current combat state.
-
-These features were built during hackathon preparation. Public HTTPS deployment, validation with a live ByteArena agent, and Solana devnet victory claims are pending.
+The Dev3pack work adds the Rugwyrm encounter API, the ByteArena manifest, the Cloudflare Worker, the test agent, and the spectator mode inside Memeria. The earlier Glass Sentinel prototype is also available by running `node server.mjs` with `ARENA` unset. Solana devnet victory records are pending.

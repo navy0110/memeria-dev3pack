@@ -2,18 +2,29 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 
-const actions = {
+const rugwyrm = process.env.ARENA === 'rugwyrm'
+  ? await import('./memeria/dist/arena/rugwyrm-arena.js')
+  : null;
+const actions = rugwyrm?.actions ?? {
   strike: 'Deal 3 damage.',
   dodge: 'Avoid damage and regain one charge, up to two.',
   pulse: 'Spend one charge to deal 6 damage.'
 };
 const rounds = new Map();
-const page = readFileSync(new URL('./arena.html', import.meta.url));
+const page = readFileSync(new URL(rugwyrm ? './rugwyrm.html' : './arena.html', import.meta.url));
+const spectator = rugwyrm
+  ? readFileSync(new URL('./memeria/dist/arena/spectator.js', import.meta.url))
+  : null;
+const name = rugwyrm ? 'Memeria · Rugwyrm Arena' : 'Lantern Arena';
+const instructions = rugwyrm
+  ? "Defeat Rugwyrm in 90 simulated seconds. Each action advances half a second. Watch the boss windup and leave its danger range before the attack lands."
+  : 'Defeat the Glass Sentinel before turn 18 ends. Dodge heavy attacks, then spend charges on pulses.';
 const port = Number(process.env.PORT || 3000);
 const origin = process.env.PUBLIC_ORIGIN || 'http://localhost:' + port;
 const ttl = 60 * 60 * 1000;
 
 function state(run) {
+  if (run.encounter) return { roundId: run.roundId, ...run.encounter.state() };
   return {
     roundId: run.roundId,
     turn: run.turn,
@@ -28,6 +39,7 @@ function state(run) {
 }
 
 function play(run, action) {
+  if (run.encounter) return run.encounter.play(action);
   const damage = state(run).nextAttack;
   if (action === 'dodge') run.charges = Math.min(2, run.charges + 1);
   if (action === 'strike') run.bossHealth = Math.max(0, run.bossHealth - 3);
@@ -46,7 +58,7 @@ function play(run, action) {
 }
 
 const spec = {
-  name: 'Lantern Arena',
+  name,
   api: {
     baseUrl: origin,
     start: { method: 'POST', path: '/api/runs', save: { roundId: 'roundId', apiKey: 'apiKey' } },
@@ -70,6 +82,10 @@ function reply(res, code, body) {
 
 export const server = createServer(async (req, res) => {
   const path = req.url.split('?')[0];
+  if (spectator && req.method === 'GET' && path === '/rugwyrm-spectator.js') {
+    res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'no-store' });
+    return res.end(spectator);
+  }
   if (req.method === 'GET' && (path === '/' || /^\/watch\/[\da-f-]+$/.test(path))) {
     res.writeHead(200, {
       'Content-Type': 'text/html; charset=utf-8',
@@ -79,7 +95,7 @@ export const server = createServer(async (req, res) => {
   }
   if (req.method === 'GET' && path === '/api/game-spec') {
     res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-    return res.end('# Lantern Arena\nDefeat the Glass Sentinel before turn 18 ends. Dodge heavy attacks, then spend charges on pulses. Runs expire after one hour and reset if the server restarts.\n\n```json\n' + JSON.stringify(spec, null, 2) + '\n```\n');
+    return res.end('# ' + name + '\n' + instructions + ' Runs expire after one hour and reset if the server restarts.\n\n```json\n' + JSON.stringify(spec, null, 2) + '\n```\n');
   }
   if (req.method === 'POST' && path === '/api/runs') {
     const now = Date.now();
@@ -89,13 +105,15 @@ export const server = createServer(async (req, res) => {
     if (rounds.size >= 1000) return reply(res, 503, { error: 'Arena full. Try again later.' });
     const run = { roundId: randomUUID(), apiKey: randomUUID(), expiresAt: now + ttl,
       playerHealth: 16, bossHealth: 22, charges: 1, turn: 1, status: 'active' };
+    if (rugwyrm) run.encounter = rugwyrm.createRun();
     rounds.set(run.roundId, run);
     return reply(res, 201, { ...state(run), apiKey: run.apiKey });
   }
-  const match = /^\/api\/runs\/([\da-f-]+)(?:\/(strike|dodge|pulse))?$/.exec(path);
+  const match = /^\/api\/runs\/([\da-f-]+)(?:\/([a-z]+))?$/.exec(path);
   const run = match && rounds.get(match[1]);
   if (!run || run.expiresAt <= Date.now()) return reply(res, 404, { error: 'Run not found or expired.' });
   const action = match[2];
+  if (action && !Object.hasOwn(actions, action)) return reply(res, 404, { error: 'Action not found.' });
   if (req.method === 'GET' && !action) return reply(res, 200, state(run));
   if (req.method !== 'POST' || !action) return reply(res, 405, { error: 'Method not allowed.' });
   if (req.headers.authorization !== 'Bearer ' + run.apiKey) return reply(res, 403, { error: 'Invalid run credential.' });
@@ -106,7 +124,8 @@ export const server = createServer(async (req, res) => {
       if (body.length > 2048) return reply(res, 413, { error: 'Payload too large.' });
     }
     const turn = JSON.parse(body)?.turn;
-    if (turn !== run.turn && turn !== String(run.turn)) {
+    const currentTurn = state(run).turn;
+    if (turn !== currentTurn && turn !== String(currentTurn)) {
       return reply(res, 409, { ...state(run), error: 'Turn changed. Read state before retrying.' });
     }
   } catch {
@@ -117,4 +136,4 @@ export const server = createServer(async (req, res) => {
   }
   play(run, action);
   reply(res, 200, state(run));
-}).listen(port, () => console.log('Lantern Arena: ' + origin));
+}).listen(port, rugwyrm ? '127.0.0.1' : undefined, () => console.log(name + ': ' + origin));

@@ -20,15 +20,15 @@ export class FollowCamera {
   yaw = 0;
   pitch = DEFAULT_PITCH;
 
-  constructor(private readonly camera: THREE.PerspectiveCamera) {}
+  constructor(private readonly camera: THREE.PerspectiveCamera, private readonly radius = RADIUS) {}
 
   update(focusX: number, focusZ: number, dt: number): void {
     this.yaw -= takeDragYaw() * MOUSE_SENSITIVITY;
     this.yaw += rotateHeld() * KEY_SPEED * dt;
 
     this.pitch = Math.max(MIN_PITCH, Math.min(MAX_PITCH, this.pitch + takeDragPitch() * MOUSE_SENSITIVITY));
-    const flat = Math.cos(this.pitch) * RADIUS;
-    offset.set(Math.sin(this.yaw) * flat, Math.sin(this.pitch) * RADIUS, Math.cos(this.yaw) * flat);
+    const flat = Math.cos(this.pitch) * this.radius;
+    offset.set(Math.sin(this.yaw) * flat, Math.sin(this.pitch) * this.radius, Math.cos(this.yaw) * flat);
     target.set(focusX, 1.2 + SKY_LOOK, focusZ);
     this.camera.position.copy(target).add(offset);
     this.camera.lookAt(target);

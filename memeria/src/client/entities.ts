@@ -1,10 +1,14 @@
 import * as THREE from 'three';
-import { MOB_TEMPLATES } from '../data';
 import type { GameState } from '../shared/game';
 import type { MobState, NpcState, PlayerClass } from '../shared/types';
 import { buildMascot, type Mascot } from './mascots';
 import { buildMob, type MobModel } from './mobmodels';
 import { buildNpc, type NpcModel } from './npcmodels';
+
+type EntitySceneState = Pick<GameState, 'npcs' | 'templates' | 'equipment' | 'itemDefs' | 'time' | 'inSafeZone'> & {
+  player: Pick<GameState['player'], 'id' | 'x' | 'z' | 'facing'>;
+  mobs: Pick<MobState, 'id' | 'templateId' | 'x' | 'z' | 'facing' | 'alive' | 'hp' | 'windup'>[];
+};
 
 const FLASH_TIME = 0.15;
 const DRAW_DIST = 80;
@@ -34,7 +38,8 @@ interface NpcVisual extends Visual {
 
 interface MobVisual extends Visual {
   bar: THREE.Mesh;
-  ref: MobState;
+  ref: EntitySceneState['mobs'][number];
+  height: number;
   winding: boolean;
   lunge: number;
   model: MobModel;
@@ -67,7 +72,7 @@ export class Entities {
   constructor(
     scene: THREE.Scene,
     private readonly camera: THREE.Camera,
-    game: GameState,
+    game: EntitySceneState,
     cls: PlayerClass,
     skin = 0,
   ) {
@@ -97,7 +102,7 @@ export class Entities {
     }
 
     for (const m of game.mobs) {
-      const tpl = MOB_TEMPLATES[m.templateId];
+      const tpl = game.templates[m.templateId];
       const model = buildMob(tpl.look, tpl.color);
       const { root, mats } = model;
       root.scale.setScalar(tpl.scale ?? 1);
@@ -109,7 +114,7 @@ export class Entities {
       );
       bar.renderOrder = 1;
       scene.add(bar);
-      this.mobs.set(m.id, { ...visual(root, mats), bar, ref: m, winding: false, lunge: 0, model, prevX: m.x, prevZ: m.z, phase: Math.random() * 6 });
+      this.mobs.set(m.id, { ...visual(root, mats), bar, ref: m, height: model.height * (tpl.scale ?? 1), winding: false, lunge: 0, model, prevX: m.x, prevZ: m.z, phase: Math.random() * 6 });
       this.anchors.set(m.id, root);
     }
   }
@@ -122,7 +127,7 @@ export class Entities {
   /** Altura del modelo de un mob (para ubicar etiquetas). */
   heightOf(id: string): number {
     const mob = this.mobs.get(id);
-    if (mob) return mob.model.height * (MOB_TEMPLATES[mob.ref.templateId].scale ?? 1);
+    if (mob) return mob.height;
     return this.npcs.get(id)?.model.height ?? 2;
   }
 
@@ -190,7 +195,7 @@ export class Entities {
     this.armReady += Math.sign(target - this.armReady) * Math.min(Math.abs(target - this.armReady), dt * 5);
   }
 
-  sync(game: GameState, dt: number): void {
+  sync(game: EntitySceneState, dt: number): void {
     const p = game.player;
     let lunge = 0;
     const swinging = this.swingT >= 0;
@@ -266,10 +271,10 @@ export class Entities {
       v.root.visible = near;
       v.bar.visible = near;
       if (!near) continue;
-      const maxHp = MOB_TEMPLATES[m.templateId].maxHp;
+      const tpl = game.templates[m.templateId];
+      const maxHp = tpl.maxHp;
       const ratio = m.hp / maxHp;
       // Aviso del golpe: se agranda y echa atrás; al pegar, se lanza hacia adelante.
-      const tpl = MOB_TEMPLATES[m.templateId];
       let lunge = 0;
       let tilt = 0;
       let grow = 1;
@@ -291,9 +296,9 @@ export class Entities {
       v.root.position.set(m.x + Math.sin(m.facing) * lunge, 0, m.z + Math.cos(m.facing) * lunge);
       v.root.rotation.order = 'YXZ';
       v.root.rotation.set(tilt, m.facing, 0);
-      v.root.scale.setScalar(grow);
+      v.root.scale.setScalar((tpl.scale ?? 1) * grow);
       this.animateMob(v, m.x, m.z, dt);
-      v.bar.position.set(m.x - (1 - ratio) / 2, v.model.height * (MOB_TEMPLATES[m.templateId].scale ?? 1) + 0.25, m.z);
+      v.bar.position.set(m.x - (1 - ratio) / 2, v.height + 0.25, m.z);
       v.bar.scale.x = ratio;
       v.bar.quaternion.copy(this.camera.quaternion);
       tickFlash(v, dt);

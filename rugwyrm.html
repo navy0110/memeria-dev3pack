@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memeria · Rugwyrm Arena</title>
+<style>
+  :root { color-scheme: dark; font: 16px system-ui; }
+  body { margin: 0; background: #12191a; color: #e7efdf; }
+  main { max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+  h1 { margin-bottom: .3em; color: #d1eab7; font: 2.5rem Georgia, serif; }
+  canvas { width: 100%; display: block; background: #202d2b; margin-block: 1rem; border: 1px solid #59665a; }
+  #scene { aspect-ratio: 16 / 10; }
+  [hidden] { display: none; }
+  button, a { color: #d1eab7; }
+  button { font: inherit; background: #233c31; border: 1px solid #62746a; padding: .55rem; margin: .2rem; }
+  button:disabled { opacity: .45; }
+  progress { width: 100%; accent-color: #a5bf8a; }
+  #events { min-height: 1.5em; }
+</style>
+<main>
+  <h1>Rugwyrm Arena</h1>
+  <p>Rug Pull Marsh · Memeria</p>
+  <button id="start">Enter arena</button>
+  <a id="watch" hidden target="_blank" rel="noopener">Open spectator view</a>
+  <section id="arena" hidden>
+    <div id="player"></div><progress id="playerHp" aria-label="Player health"></progress>
+    <div id="boss"></div><progress id="bossHp" aria-label="Boss health"></progress>
+    <canvas id="scene" aria-label="3D view of Rugwyrm and Dogwifhat" hidden></canvas>
+    <canvas width="680" height="420" id="map" aria-label="Tactical view of the encounter" hidden></canvas>
+    <p id="status" role="status"></p>
+    <p id="events"></p>
+    <div id="moves">
+      <button data-action="approach">Approach</button>
+      <button data-action="retreat">Retreat</button>
+      <button data-action="strike">Shoot</button>
+      <button data-action="skill">Hat Trick</button>
+      <button data-action="wait">Wait</button>
+    </div>
+  </section>
+  <p id="error" role="alert"></p>
+</main>
+<script type="module">
+  const byId = id => document.getElementById(id);
+  const watchId = location.pathname.startsWith('/watch/') ? location.pathname.split('/')[2] : '';
+  const buttons = [...document.querySelectorAll('[data-action]')];
+  const canvas = byId('map');
+  const ctx = canvas.getContext('2d');
+  let run;
+  let apiKey;
+  let busy = false;
+  let view;
+  let viewRun;
+  let viewPending = false;
+  let fallback = false;
+
+  async function showEncounter() {
+    if (viewPending || fallback) return;
+    if (viewRun !== run.roundId) {
+      viewPending = true;
+      view?.dispose();
+      try {
+        const { createSpectator } = await import('/rugwyrm-spectator.js');
+        viewRun = run.roundId;
+        const scene = byId('scene');
+        view = createSpectator(scene, run);
+        scene.hidden = false;
+      } catch {
+        fallback = true;
+        byId('scene').hidden = true;
+        canvas.hidden = false;
+      } finally {
+        viewPending = false;
+      }
+    }
+    view?.update(run);
+  }
+
+  function render() {
+    if (!run) return;
+    byId('arena').hidden = false;
+    const { player, boss, zone } = run;
+    for (const [id, unit] of Object.entries({ player, boss })) {
+      byId(id).textContent = unit.name + ' · ' + Math.ceil(unit.hp) + '/' + unit.maxHp + ' HP'
+        + (id === 'player' ? ' · ' + Math.floor(unit.mp) + ' MP' : '');
+      byId(id + 'Hp').max = unit.maxHp;
+      byId(id + 'Hp').value = unit.hp;
+    }
+    byId('status').textContent = run.status === 'active'
+      ? 'Turn ' + run.turn + ' · ' + run.elapsed + ' s · Distance ' + run.distance.toFixed(2)
+        + (boss.windup > 0 ? ' · Heavy attack in ' + boss.windup.toFixed(2) + ' s' : '')
+      : (run.status === 'won' ? 'Victory. Rugwyrm falls.' : 'Defeat.');
+    byId('events').textContent = run.events.join(' ');
+    buttons.forEach(button => {
+      button.disabled = busy || !run.availableActions.includes(button.dataset.action);
+    });
+    if (!fallback) {
+      void showEncounter().then(() => { if (fallback) render(); });
+      return;
+    }
+    const scale = 10;
+    const position = unit => [
+      canvas.width / 2 + (unit.x - (zone.minX + zone.maxX) / 2) * scale,
+      canvas.height / 2 + (unit.z - (zone.minZ + zone.maxZ) / 2) * scale,
+    ];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#59665a';
+    ctx.strokeRect(canvas.width / 2 - 180, canvas.height / 2 - 180, 360, 360);
+    if (boss.windup > 0 && run.status === 'active') {
+      ctx.beginPath();
+      ctx.arc(...position(boss), boss.dangerRange * scale, 0, Math.PI * 2);
+      ctx.fillStyle = '#c455455e';
+      ctx.fill();
+    }
+    for (const [unit, radius, color] of [[boss, 22, '#aa7dc4'], [player, 9, '#c7e8a2']]) {
+      if (unit.hp <= 0) continue;
+      ctx.beginPath();
+      ctx.arc(...position(unit), radius, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+  }
+
+  async function request(path, options) {
+    if (busy) return false;
+    busy = true;
+    byId('start').disabled = true;
+    render();
+    try {
+      const response = await fetch(path, options);
+      const data = await response.json();
+      if (data.roundId) run = data;
+      if (data.apiKey) {
+        apiKey = data.apiKey;
+        byId('watch').href = '/watch/' + run.roundId;
+        byId('watch').hidden = false;
+      }
+      if (!response.ok) throw new Error(data.error);
+      byId('error').textContent = '';
+      return true;
+    } catch (error) {
+      byId('error').textContent = error.message;
+      return false;
+    } finally {
+      busy = false;
+      byId('start').disabled = false;
+      render();
+    }
+  }
+
+  byId('start').onclick = () => request('/api/runs', { method: 'POST' });
+  for (const button of buttons) button.onclick = () => request('/api/runs/' + run.roundId + '/' + button.dataset.action, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },
+    body: JSON.stringify({ turn: run.turn }),
+  });
+  if (watchId) {
+    byId('start').hidden = true;
+    byId('moves').hidden = true;
+    const refresh = async () => {
+      if (await request('/api/runs/' + watchId) && run.status === 'active') setTimeout(refresh, 750);
+    };
+    refresh();
+  }
+</script>
+</html>
