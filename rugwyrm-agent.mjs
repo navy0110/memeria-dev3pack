@@ -2,11 +2,20 @@ import assert from 'node:assert/strict';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 const base = new URL(process.argv[2] ?? 'http://127.0.0.1:3010');
+const game = process.argv[3] ? new URL(process.argv[3]) : null;
 const response = await fetch(new URL('/api/runs', base), { method: 'POST' });
 assert.equal(response.status, 201);
 const { apiKey, ...initial } = await response.json();
 const path = '/api/runs/' + initial.roundId;
 console.log('Spectator:', new URL('/watch/' + initial.roundId, base).href);
+if (game) {
+  game.searchParams.set('bytearena', initial.roundId);
+  console.log('Watch inside Memeria:', game.href);
+  if (!process.env.ARENA_FAST) {
+    console.log('The encounter starts in 15 seconds.');
+    await sleep(15_000);
+  }
+}
 
 let state = initial;
 while (state.status === 'active') {

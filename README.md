@@ -4,10 +4,19 @@
 
 ## Demo
 
+- [Play the full Memeria game](https://memeria.fun/)
 - [Public Rugwyrm arena](https://memeria-dev3pack-arena.lovechainart.workers.dev/)
 - [ByteArena game manifest](https://memeria-dev3pack-arena.lovechainart.workers.dev/api/game-spec)
 
 The public demo is an isolated encounter that uses Memeria's combat engine, Rugwyrm AI, and Dogwifhat class. The boss has 160 HP for a short demo. Our test agent completed it through the public API. Registration and testing with the official ByteArena agent are pending.
+
+To watch a fresh run inside Memeria, run this from the repository root using Node.js:
+
+```powershell
+node rugwyrm-agent.mjs https://memeria-dev3pack-arena.lovechainart.workers.dev https://memeria.fun/
+```
+
+Open the printed **Watch inside Memeria** link. The agent starts after 15 seconds so you can open the viewer first. Each run is available for one hour.
 
 ## Run Memeria and the arena locally
 
@@ -34,7 +43,7 @@ $env:MEMERIA_ARENA_ORIGIN = 'http://127.0.0.1:3010'
 pnpm dev
 ```
 
-Open the Vite URL to play Memeria. Add `?bytearena=<roundId>` to that URL to watch a run in Hodl Hollow. Use the UUID from the agent's spectator link. Vite forwards `/api/runs` to the local arena. A hosted Memeria client requires the corresponding route to the arena Worker.
+Open the Vite URL to play Memeria. Add `?bytearena=<roundId>` to that URL to watch a run in Hodl Hollow. Use the UUID from the agent's spectator link. Vite forwards `/api/runs` to the local arena. On Cloudflare, the full game reads run states from the arena Worker through a service binding.
 
 ## Cloudflare
 
