@@ -18,6 +18,10 @@ node rugwyrm-agent.mjs https://memeria-dev3pack-arena.lovechainart.workers.dev h
 
 Open the printed **Watch inside Memeria** link. The agent starts after 15 seconds so you can open the viewer first. Each run is available for one hour.
 
+### Solana devnet victory record
+
+Our test agent defeated Rugwyrm in **9.95 simulated seconds**. After verifying the result against the arena API, we recorded the run ID and result in a finalized Solana devnet memo signed by our test wallet. The memo records the demo result. The combat simulation runs on the Memeria server. [View the finalized transaction](https://explorer.solana.com/tx/5v8FgY9Xj4jaUZNCXnPJ4fwdbboUa4EfXwbfFPSGsURYa9FCosYmE39AC6oANcXYMR8SR2xFogzopfSc8hZYwuHx?cluster=devnet)
+
 ## Run Memeria and the arena locally
 
 Use Node.js 24 or later and pnpm 10. Run these commands from the repository root in PowerShell.
@@ -53,4 +57,4 @@ The arena Worker is configured in [wrangler.arena.jsonc](memeria/wrangler.arena.
 
 Ignacio Bavala created the original Memeria game. This copy is based on revision `5be039522e256f8eb75144d733134ecab84f86e1`. The [authorization](PERMISSION.md) covers the full game within its stated scope, and the [MIT notice](memeria/LICENSE) preserves Ignacio's copyright. Third-party music is outside this snapshot.
 
-The Dev3pack work adds the Rugwyrm encounter API, the ByteArena manifest, the Cloudflare Worker, the test agent, and the spectator mode inside Memeria. The earlier Glass Sentinel prototype is also available by running `node server.mjs` with `ARENA` unset. Solana devnet victory records are pending.
+The Dev3pack work adds the Rugwyrm encounter API, the ByteArena manifest, the Cloudflare Worker, the test agent, the spectator mode inside Memeria, and a Solana devnet memo for the verified demo victory. The earlier Glass Sentinel prototype is also available by running `node server.mjs` with `ARENA` unset.
